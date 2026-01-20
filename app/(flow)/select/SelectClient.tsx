@@ -4,29 +4,64 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-/**
- * ここに「元の /select/page.tsx に書いてあった中身」を移植する。
- * 重要: useSearchParams() を使うロジックは必ずこの Client 内に閉じる。
- */
+/* =========================
+   共通ボタンスタイル
+========================= */
+const btn =
+    "w-full rounded-xl border border-zinc-200 py-4 text-base text-zinc-800 text-center hover:bg-zinc-50 active:bg-zinc-100 transition";
+
 export default function SelectClient() {
     const searchParams = useSearchParams();
+    const type = searchParams.get("type");
 
-    // 例: 既存コードで使ってた値をここで取る
-    // const type = searchParams.get("type");
-    // const tone = searchParams.get("tone");
+    if (!type) {
+        return (
+            <div className="text-sm text-zinc-500">
+                最初から選び直してください
+            </div>
+        );
+    }
 
-    // ↓↓↓ ここから下を、あなたの「元の select/page.tsx のUI」に置き換える（そのまま移植）
+    /* =========================
+       thanks / leave は
+       TimePage をスキップ
+    ========================= */
+    const isSkipTime = type === "thanks" || type === "leave";
+
+    const buildHref = (tone: string) => {
+        if (isSkipTime) {
+            return `/result?type=${type}&tone=${tone}`;
+        }
+        return `/time?type=${type}&tone=${tone}`;
+    };
+
     return (
-        <div className="w-full max-w-sm flex flex-col items-center text-center gap-6">
-            <div className="text-xs text-zinc-400 tracking-wide">Post Ready</div>
-
-            <div className="text-sm text-zinc-600">
-                SelectClient に分離済み（ここに元のUIを移植）
+        <div className="w-full max-w-sm flex flex-col items-center text-center gap-10">
+            <div className="text-xs text-zinc-400 tracking-wide">
+                Post Ready
             </div>
 
-            <Link href="/" className="text-xs text-zinc-400 underline">
-                トップへ戻る
-            </Link>
+            <h1 className="text-2xl font-semibold text-zinc-900">
+                今日は、どんなトーンにしますか？
+            </h1>
+
+            <div className="w-full flex flex-col gap-3">
+                <Link href={buildHref("soft")} className={btn}>
+                    やさしめ
+                </Link>
+                <Link href={buildHref("bright")} className={btn}>
+                    明るめ
+                </Link>
+                <Link href={buildHref("sweet")} className={btn}>
+                    ほんのり甘め
+                </Link>
+                <Link href={buildHref("chill")} className={btn}>
+                    まったり
+                </Link>
+                <Link href={buildHref("energetic")} className={btn}>
+                    元気め
+                </Link>
+            </div>
         </div>
     );
 }
