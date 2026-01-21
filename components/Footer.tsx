@@ -18,6 +18,11 @@ export default function Footer() {
                     特定商取引法に基づく表記
                 </Link>
 
+                {/* ★追加：料金について（審査必須） */}
+                <Link href="/pricing" className="hover:text-zinc-600 transition">
+                    料金について
+                </Link>
+
                 <a
                     href="mailto:chillaxllc1@gmail.com"
                     className="hover:text-zinc-600 transition"

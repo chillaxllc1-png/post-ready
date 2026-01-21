@@ -58,6 +58,13 @@ export default function Home() {
           </Link>
         </div>
 
+        {/* 料金導線（審査用・控えめ） */}
+        <div className="mt-12 text-xs text-zinc-400">
+          <Link href="/pricing" className="underline">
+            料金について
+          </Link>
+        </div>
+
       </main>
     </div>
   );
