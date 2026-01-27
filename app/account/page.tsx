@@ -79,6 +79,19 @@ export default async function AccountPage() {
                 >
                     退会をご希望の場合はお問い合わせください
                 </a>
+
+                {/* 法的情報 */}
+                <div className="mt-4 text-[11px] text-zinc-400 flex flex-col gap-1">
+                    <a href="/terms" className="underline underline-offset-4">
+                        利用規約
+                    </a>
+                    <a href="/privacy" className="underline underline-offset-4">
+                        プライバシーポリシー
+                    </a>
+                    <a href="/tokutei" className="underline underline-offset-4">
+                        特定商取引法に基づく表記
+                    </a>
+                </div>
             </div>
         </main>
     );
