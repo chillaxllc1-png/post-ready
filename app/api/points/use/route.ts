@@ -1,41 +1,45 @@
 // app/api/points/use/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { consumePoints } from "@/app/api/points/_store";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 /**
  * 1投稿 = 100pt 消費
- * Cookie ベース（暫定）
+ * - Store が唯一の真実
+ * - 未ログインは 401
+ * - 不足・期限切れは 200 + success:false
  */
 export async function POST(req: NextRequest) {
     try {
-        // ✅ 既存ポイント取得（Request Cookie）
-        const current = Number(req.cookies.get("points")?.value ?? 0);
+        const sessionUser = req.cookies.get("session_user")?.value;
 
-        // ポイント不足（200で返す設計）
-        if (current < 100) {
+        if (!sessionUser) {
+            return NextResponse.json(
+                { success: false, reason: "unauthorized" },
+                { status: 401 }
+            );
+        }
+
+        const result = consumePoints(sessionUser, 100);
+
+        if (!result.ok) {
             return NextResponse.json({
                 success: false,
-                reason: "insufficient_points",
-                points: current,
+                reason: result.reason, // "insufficient_points" | "expired" | "not_found"
+                points: result.points,
+                expiresAt: result.expiresAt ?? null,
             });
         }
 
-        const next = current - 100;
-
-        // ✅ Cookie更新は「レスポンス」に対して行う
-        const res = NextResponse.json({
+        return NextResponse.json({
             success: true,
-            points: next,
+            points: result.points,
+            expiresAt: result.expiresAt ?? null,
         });
-
-        res.cookies.set("points", String(next), {
-            path: "/",
-            httpOnly: false, // クライアントで読む想定なら false（暫定）
-            sameSite: "lax",
-            // secure: process.env.NODE_ENV === "production", // 本番は推奨
-        });
-
-        return res;
     } catch (err) {
+        console.error("points/use error:", err);
         return NextResponse.json(
             { success: false, reason: "server_error" },
             { status: 500 }

@@ -30,6 +30,10 @@ export default function Home() {
           そのまま使える投稿が決まるツールです。
         </p>
 
+        <p className="text-[11px] text-zinc-400 leading-relaxed">
+          ※ 一部機能の利用にはアカウント登録およびポイント購入が必要です。
+        </p>
+
         {/* メイン質問 */}
         <h1 className="text-2xl font-semibold text-zinc-900">
           今日は、どんな投稿にしますか？
