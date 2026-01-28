@@ -5,6 +5,15 @@ export default function Footer() {
         <footer className="w-full py-6 mt-16">
             <div className="max-w-sm mx-auto flex flex-col items-center gap-2 text-[10px] text-zinc-400">
 
+                {/* ★追加：認証導線（審査対応用） */}
+                <Link href="/login" className="hover:text-zinc-600 transition">
+                    ログイン
+                </Link>
+
+                <Link href="/signup" className="hover:text-zinc-600 transition">
+                    新規登録
+                </Link>
+
                 {/* 法的リンク（縦置き） */}
                 <Link href="/terms" className="hover:text-zinc-600 transition">
                     利用規約
