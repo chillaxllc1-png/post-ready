@@ -92,6 +92,16 @@ export default async function AccountPage() {
                         特定商取引法に基づく表記
                     </a>
                 </div>
+
+                {/* ログアウト（審査・運用向け） */}
+                <form action="/api/auth/logout" method="POST" className="mt-2">
+                    <button
+                        type="submit"
+                        className="text-xs text-zinc-400 underline underline-offset-4"
+                    >
+                        ログアウト
+                    </button>
+                </form>
             </div>
         </main>
     );
